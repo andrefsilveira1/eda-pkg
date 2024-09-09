@@ -81,6 +81,16 @@ func (suite *EventDispatcherTestSuite) TestEventDispatcherRegisterWithSameHandle
 
 }
 
+func (suite *EventDispatcherTestSuite) TestEventDispatcherClear() {
+	err := suite.EventDispatcher.Register(suite.event.GetName(), &suite.handler)
+	suite.Nil(err)
+	suite.Equal(1, len(suite.EventDispatcher.handlers[suite.event.GetName()]))
+
+	suite.EventDispatcher.Clear()
+
+	suite.Equal(0, len(suite.EventDispatcher.handlers))
+}
+
 func TestSuite(t *testing.T) {
 	suite.Run(t, new(EventDispatcherTestSuite))
 }
