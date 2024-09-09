@@ -6,6 +6,8 @@ type EventDispatcher struct {
 	handlers map[string][]EventHandlerInterface
 }
 
+var ErrHandlerAlreadyRegistered = errors.New("handler already registered")
+
 func NewEventDispatcher() *EventDispatcher {
 	return &EventDispatcher{
 		handlers: make(map[string][]EventHandlerInterface),
@@ -16,7 +18,7 @@ func (ed *EventDispatcher) Register(eventName string, handler EventHandlerInterf
 	if _, ok := ed.handlers[eventName]; ok {
 		for _, h := range ed.handlers[eventName] {
 			if h == handler {
-				return errors.New("handler already registered")
+				return ErrHandlerAlreadyRegistered
 			}
 		}
 	}
